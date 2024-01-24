@@ -3,7 +3,7 @@ import { TestService } from './test.service';
 import { TestComponent } from './test.component';
 
 const TestServiceStub: Partial<TestService> = {
-    log: jest.fn().mockImplementation(() => {}),
+    foo: jest.fn().mockImplementation(() => 'mocked foo'),
 };
 
 describe('Component That Depend To a Service (Using TestBed)', () => {

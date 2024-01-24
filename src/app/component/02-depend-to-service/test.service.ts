@@ -4,11 +4,11 @@ import { Injectable } from "@angular/core";
 export class TestService {
   constructor() {}
 
-  log() {
-    console.log("test");
+  foo() {
+    return "foo";
   }
 
   bar() {
-    console.log("bar");
+    return "bar";
   }
 }

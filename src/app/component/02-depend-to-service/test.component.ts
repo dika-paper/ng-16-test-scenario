@@ -10,6 +10,6 @@ export class TestComponent implements OnInit {
   constructor(private service: TestService) {}
 
   ngOnInit() {
-    this.service.log();
+    this.service.foo();
   }
 }
