@@ -1,7 +1,12 @@
-import { ComponentFixture, TestBed } from "@angular/core/testing";
+import {
+  ComponentFixture,
+  TestBed,
+  fakeAsync,
+  tick,
+} from "@angular/core/testing";
 import { TestComponent } from "./with-observable";
 import { TestService } from "./with-observable";
-import { BehaviorSubject, of, takeUntil } from "rxjs";
+import { BehaviorSubject, delay, of, takeUntil } from "rxjs";
 import { expectText } from "@paper-fe/armstrong/dom";
 
 const TestServiceStub: Partial<TestService> = {
@@ -34,13 +39,13 @@ describe("Component with Observable", () => {
   });
 
   describe("Consuming BehaviorSubject with AsyncPipe", () => {
-    it("should display the data from the TestService", () => {
+    it("should display the initial data from the TestService", () => {
       fixture.whenStable().then(() => {
         expectText(fixture, "test", "Test Data Mock");
       });
     });
 
-    it("should update observable value", () => {
+    it("should display updated observable value", () => {
       service.string$ = of("New Data");
       fixture.detectChanges();
       fixture.whenStable().then(() => {
@@ -50,13 +55,13 @@ describe("Component with Observable", () => {
   });
 
   describe("Consuming BehaviorSubject with Subscription", () => {
-    it("should display the data from the TestService", () => {
+    it("should display the initial data from the TestService", () => {
       fixture.whenStable().then(() => {
         expect(component.number).toBe(0);
       });
     });
 
-    it("should update observable value", () => {
+    it("should display updated observable value", () => {
       service.number$ = of(2);
       fixture.detectChanges();
 
