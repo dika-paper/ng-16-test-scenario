@@ -1,35 +1,35 @@
-import {
-  ComponentFixture,
-  TestBed,
-  fakeAsync,
-  tick,
-} from "@angular/core/testing";
-import { TestComponent } from "./with-observable";
-import { TestService } from "./with-observable";
-import { BehaviorSubject, delay, of, takeUntil } from "rxjs";
+import { ComponentFixture, TestBed } from "@angular/core/testing";
+import { StandaloneComponent } from "./with-observable";
+import { StoreService } from "./with-observable";
+import { BehaviorSubject, of, takeUntil } from "rxjs";
 import { expectText } from "@paper-fe/armstrong/dom";
 
-const TestServiceStub: Partial<TestService> = {
+const TestServiceStub: Partial<StoreService> = {
   string$: of("Test Data Mock"),
   number$: of(0),
 };
 
-describe("Component with Observable", () => {
-  let component: TestComponent;
-  let fixture: ComponentFixture<TestComponent>;
-  let service: TestService;
+describe("Standalone Component with Observable", () => {
+  let component: StandaloneComponent;
+  let fixture: ComponentFixture<StandaloneComponent>;
+  let service: StoreService;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [TestComponent],
-      providers: [{ provide: TestService, useValue: TestServiceStub }],
-    }).compileComponents();
+      imports: [StandaloneComponent],
+    })
+      .overrideComponent(StandaloneComponent, {
+        set: {
+          providers: [{ provide: StoreService, useValue: TestServiceStub }],
+        },
+      })
+      .compileComponents();
   });
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(TestComponent);
+    fixture = TestBed.createComponent(StandaloneComponent);
     component = fixture.componentInstance;
-    service = TestBed.inject(TestService);
+    service = fixture.debugElement.injector.get(StoreService);
 
     fixture.detectChanges();
   });
@@ -39,7 +39,7 @@ describe("Component with Observable", () => {
   });
 
   describe("Consuming BehaviorSubject with AsyncPipe", () => {
-    it("should display the initial data from the TestService", () => {
+    it("should display the initial data from the StoreService", () => {
       fixture.whenStable().then(() => {
         expectText(fixture, "test", "Test Data Mock");
       });
@@ -55,7 +55,7 @@ describe("Component with Observable", () => {
   });
 
   describe("Consuming BehaviorSubject with Subscription", () => {
-    it("should display the initial data from the TestService", () => {
+    it("should display the initial data from the StoreService", () => {
       fixture.whenStable().then(() => {
         expect(component.number).toBe(0);
       });
