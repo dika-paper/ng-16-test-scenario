@@ -28,12 +28,12 @@ describe('WithSetTimeOutComponent', () => {
     it('should runs gotoTop() method after ngAfterViewInit()', () => {
         const spyOnGotoTop = jest.spyOn(component, 'gotoTop');
 
-        fixture.detectChanges();
+        component.ngAfterViewInit();
 
         expect(spyOnGotoTop).toHaveBeenCalled();
     });
 
-    it('should run callback on gotoTop() method after timeout finished', fakeAsync(() => {
+    it('should run callback in the gotoTop() method after timeout has finished', fakeAsync(() => {
         const spyOnGotoTop = jest.spyOn(component, 'gotoTop');
         component.yameteContainer.nativeElement.scrollTop = 1;
 
@@ -43,7 +43,7 @@ describe('WithSetTimeOutComponent', () => {
         tick(200);
         fixture.detectChanges();
 
-        // Now our callback should have been called!
+        // Now our callback inside setTimeout() should have been called!
         fixture.whenStable().then(() => {
             expect(spyOnGotoTop).toHaveBeenCalled();
             expect(component.yameteContainer.nativeElement.scrollTop).toEqual(0)
